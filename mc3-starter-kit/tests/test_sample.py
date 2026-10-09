@@ -22,6 +22,8 @@ CORPUS = ROOT / "mc3-corpus"
 sys.path.insert(0, str(APP))
 
 from cite import cite, find_span  # noqa: E402
+sys.path.insert(0, str(ROOT))
+from score_sample import norm_answer, points_for  # noqa: E402
 from parse import build_index  # noqa: E402
 from retrieve import retrieve  # noqa: E402
 
@@ -82,6 +84,15 @@ class SampleCorpusTest(unittest.TestCase):
                 found,
             )
             self.assertEqual(paths, query["expected_citations"], query["query"])
+
+    def test_grader_accepts_a_unit_and_rejects_an_extra_file(self):
+        query = QUESTIONS[0]
+        self.assertEqual(norm_answer("94 C"), "94")
+        self.assertEqual(norm_answer("94°C"), "94")
+        self.assertEqual(norm_answer("94 degrees"), "94")
+        self.assertEqual(points_for(query, "94 C", query["expected_citations"]), 20)
+        self.assertEqual(points_for(query, "94", query["expected_citations"] + ["specs/tq40_datasheet_r1_WITHDRAWN.pdf"]), 0)
+        self.assertEqual(norm_answer("Q3 FY27"), norm_answer("Q3FY27"))
 
     def test_a_guess_that_is_not_in_the_corpus_is_refused(self):
         query = QUESTIONS[-1]["query"]
