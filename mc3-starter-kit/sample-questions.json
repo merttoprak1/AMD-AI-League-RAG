@@ -1,0 +1,133 @@
+{
+  "challenge": "mini-challenge-3",
+  "description": "RAG over a mixed-filetype corpus. SAMPLE set; the graded set is different and harder.",
+  "corpus": "mc3-corpus",
+  "answer_rule": "Answer with the value only — a number, a part number, a version or a quarter. Cite the corpus-relative path of every file the answer came from. If the corpus does not contain the answer, return an empty answer and no citations; do not guess.",
+  "queries": [
+    {
+      "n": 1,
+      "query": "What is the maximum junction temperature of the TQ-40?",
+      "expected_answer": "94",
+      "answer_aliases": [
+        "94 C",
+        "94°C",
+        "94 degrees"
+      ],
+      "expected_citations": [
+        "specs/tq40_datasheet_r2.pdf"
+      ],
+      "category": "pdf, superseded-document trap",
+      "note": "The WITHDRAWN r1 datasheet says 105 C. Citing r1 is wrong even though it is a real file with a real number in it."
+    },
+    {
+      "n": 2,
+      "query": "In which quarter does the TQ-60 enter customer sampling?",
+      "expected_answer": "Q3 FY27",
+      "answer_aliases": [
+        "Q3FY27",
+        "Q3FY27"
+      ],
+      "expected_citations": [
+        "planning/roadmap_fy27.docx"
+      ],
+      "category": "docx, single-hop",
+      "note": "This was the memory-capacity question until 2026-09-16. It was swapped because NO query cited the .docx, so a submission that could not parse Word documents still scored 10/10 -- the corpus listed a required file type it never actually tested. The capacity question was the most redundant one to give up: query 1 already exercises the same file and the supersession trap."
+    },
+    {
+      "n": 3,
+      "query": "What is the part number of the field-replaceable fan assembly for the TQ-40?",
+      "expected_answer": "ORR-FAN-2214-B",
+      "answer_aliases": [],
+      "expected_citations": [
+        "support/rma_parts.xlsx"
+      ],
+      "category": "xlsx, single-hop",
+      "note": "A legacy single-rotor fan for the TQ-20 is the near-miss row."
+    },
+    {
+      "n": 4,
+      "query": "Which firmware version fixed ticket ORR-1847?",
+      "expected_answer": "4.3.2",
+      "answer_aliases": [
+        "Meridian 4.3.2"
+      ],
+      "expected_citations": [
+        "support/bug_database.csv"
+      ],
+      "category": "csv, single-hop",
+      "note": "The release notes are the near-miss: topically the most release-ish file in the corpus, and they retrieve well for this question. They no longer contain the answer token itself — see _txt() for why that decoy was dropped."
+    },
+    {
+      "n": 5,
+      "query": "What error code is logged when the thermal throttle engages?",
+      "expected_answer": "E7731",
+      "answer_aliases": [],
+      "expected_citations": [
+        "logs/prod_inference_2026-09-02.log"
+      ],
+      "category": "text log, single-hop"
+    },
+    {
+      "n": 6,
+      "query": "What is the default batch timeout, in seconds, in the ingest service?",
+      "expected_answer": "180",
+      "answer_aliases": [
+        "180 seconds",
+        "180s"
+      ],
+      "expected_citations": [
+        "engineering/ingest_service.py"
+      ],
+      "category": "python source, single-hop",
+      "note": "A comment names the old value of 60. The constant is the answer."
+    },
+    {
+      "n": 7,
+      "query": "Which backplane pin carries THERM_ALERT# on the TQ-40?",
+      "expected_answer": "B14",
+      "answer_aliases": [
+        "pin B14"
+      ],
+      "expected_citations": [
+        "specs/backplane_pinout.png"
+      ],
+      "category": "png, multimodal — unanswerable without vision",
+      "note": "This value appears nowhere in any text file."
+    },
+    {
+      "n": 8,
+      "query": "What board revision is printed on the asset label?",
+      "expected_answer": "REV-C2",
+      "answer_aliases": [],
+      "expected_citations": [
+        "support/asset_label.jpg"
+      ],
+      "category": "jpg, multimodal — unanswerable without vision"
+    },
+    {
+      "n": 9,
+      "query": "The production log shows a thermal throttle incident. Which firmware release fixed the underlying defect?",
+      "expected_answer": "4.3.2",
+      "answer_aliases": [
+        "Meridian 4.3.2"
+      ],
+      "expected_citations": [
+        "logs/prod_inference_2026-09-02.log",
+        "support/bug_database.csv"
+      ],
+      "category": "multi-hop, two citations required",
+      "note": "The log names the ticket; only the bug database carries the fixed-in version. Neither file alone answers this, and the database row is deliberately worded so that the question's own terms do not retrieve it -- the ticket id in the log is the only route. Verified 2026-09-16: before that rewording the row matched directly and the question was single-hop wearing a multi-hop costume."
+    },
+    {
+      "n": 10,
+      "query": "What is the unit price of the TQ-40 at 10,000 unit volume?",
+      "expected_answer": "",
+      "answer_aliases": [],
+      "expected_citations": [],
+      "unanswerable": true,
+      "category": "refusal — the answer exists only in the ENCRYPTED file",
+      "note": "This is the 'no guessing' test, and it is sharper than a question about nothing: the answer IS in the corpus, inside supplier_agreement_ENCRYPTED.pdf, which cannot be opened. A submission that returns 6412 has either cracked the file or hallucinated, and both are wrong. Correct behaviour is an empty answer with no citations."
+    }
+  ],
+  "seed": 0
+}

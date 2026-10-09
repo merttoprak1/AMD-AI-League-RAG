@@ -1,0 +1,7 @@
+2026-09-02T03:11:04Z inference-node-07 meridian[2211]: INFO  scheduler: batch 88213 accepted, 64 requests
+2026-09-02T03:11:09Z inference-node-07 meridian[2211]: INFO  thermal: die 0 at 71C, within envelope
+2026-09-02T03:14:22Z inference-node-07 meridian[2211]: WARN  thermal: die 0 at 91C, approaching limit
+2026-09-02T03:14:41Z inference-node-07 meridian[2211]: ERROR E7731: thermal throttle engaged on die 0, clocks reduced to 60%
+2026-09-02T03:14:41Z inference-node-07 meridian[2211]: INFO  scheduler: batch 88213 latency 4.2x baseline
+2026-09-02T03:19:03Z inference-node-07 meridian[2211]: INFO  thermal: die 0 at 68C, throttle released
+2026-09-02T03:19:03Z inference-node-07 meridian[2211]: INFO  incident logged against ORR-1847

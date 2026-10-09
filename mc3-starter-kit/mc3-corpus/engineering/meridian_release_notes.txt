@@ -1,0 +1,8 @@
+Meridian firmware — release notes
+
+4.3.0  Scheduler fairness rework. New telemetry counters for per-die occupancy.
+4.3.1  Fixes a rare hang in the PCIe doorbell path under sustained small-batch load.
+4.3.3  Packaging only; no functional change.
+
+Entries are published on release. Fixes are tracked per ticket in the
+bug database, which is authoritative for which release closed a ticket.

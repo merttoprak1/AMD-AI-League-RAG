@@ -1,0 +1,17 @@
+# Pure packages. They do not depend on torch, so a normal install is safe.
+# transformers, tokenizers, and safetensors are installed with --no-deps
+# in the Dockerfile. A normal install of transformers can replace the
+# ROCm torch build with a CUDA build.
+pypdf>=5.0
+python-docx>=1.1
+openpyxl>=3.1
+lxml>=5.0
+rank-bm25>=0.2
+filelock
+huggingface-hub
+numpy
+packaging
+pyyaml
+regex
+requests
+tqdm

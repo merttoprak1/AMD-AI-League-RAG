@@ -1,0 +1,6 @@
+ticket,component,severity,summary,status,fixed_in
+ORR-1847,power,S2,Die temperature sensor reports high under sustained small-batch load,closed,4.3.2
+ORR-1802,pcie,S3,Doorbell hang under sustained small-batch load,closed,4.3.1
+ORR-1861,scheduler,S3,Per-die occupancy counter drifts after 18h uptime,open,
+ORR-1904,firmware,S4,Release notes omit ticket list for 4.3.2,open,
+ORR-1755,thermal,S3,Fan curve too aggressive at idle,closed,4.2.0
