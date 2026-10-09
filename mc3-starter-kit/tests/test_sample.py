@@ -54,6 +54,12 @@ class SampleCorpusTest(unittest.TestCase):
         self.assertTrue(any(c["withdrawn"] for c in self.by_path["specs/tq40_datasheet_r1_WITHDRAWN.pdf"]))
         self.assertFalse(any(c["withdrawn"] for c in self.by_path["specs/tq40_datasheet_r2.pdf"]))
 
+    def test_short_quarter_keeps_the_fiscal_year(self):
+        chunks = [{"path": "planning/roadmap_fy27.docx", "text": "sampling in Q3 FY27.", "withdrawn": False}]
+        span, paths, _confidence = cite("When does sampling start?", "Q3", chunks, chunks)
+        self.assertEqual(span, "Q3 FY27")
+        self.assertEqual(paths, ["planning/roadmap_fy27.docx"])
+
     def test_span_does_not_match_inside_a_longer_token(self):
         self.assertIsNone(find_span("ORR-HSK-1180-A", "180"))
         self.assertEqual(find_span("DEFAULT_BATCH_TIMEOUT_S = 180", "180"), "180")

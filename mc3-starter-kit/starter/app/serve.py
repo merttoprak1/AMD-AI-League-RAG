@@ -89,7 +89,10 @@ def _finalize(index_dir: Path, corpus: Path) -> dict:
         for chunk in _chunks:
             if not chunk.get("needs_vision"):
                 continue
-            transcript = _transcribe(corpus, chunk["path"])
+            try:
+                transcript = _transcribe(corpus, chunk["path"])
+            except Exception:
+                transcript = ""
             if transcript:
                 prior = chunk.get("text") or ""
                 chunk["text"] = prior + ("\n" if prior else "") + transcript
@@ -141,18 +144,28 @@ def _parse_model_json(raw: str) -> str:
     return answer if isinstance(answer, str) else ""
 
 
+def _pick_device():
+    """ROCm reports itself as cuda. This Mac has neither, so use MPS, then CPU."""
+    import torch
+
+    if torch.cuda.is_available():
+        return "cuda", torch.bfloat16
+    if torch.backends.mps.is_available():
+        return "mps", torch.float16
+    return "cpu", torch.float32
+
+
 def _load_model(model_dir: Path):
     import torch
     from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
 
-    if not torch.cuda.is_available():
-        raise RuntimeError("no CUDA/ROCm device")
+    device, dtype = _pick_device()
     model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
         str(model_dir),
-        torch_dtype=torch.bfloat16,
+        torch_dtype=dtype,
         device_map=None,
     )
-    model.to("cuda")
+    model.to(device)
     model.eval()
     processor = AutoProcessor.from_pretrained(str(model_dir))
     return model, processor

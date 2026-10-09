@@ -12,6 +12,7 @@ from retrieve import identifiers, rank_paths
 
 TOKEN_RE = re.compile(r"[A-Za-z0-9]+")
 SQUEEZE_RE = re.compile(r"[\s\-\.\u00b7_]+")
+FY_AFTER = re.compile(r"\s+FY\d+\b", re.I)
 
 
 def cite(
@@ -36,7 +37,7 @@ def cite(
             continue
         span = find_span(chunk.get("text", ""), answer)
         if span is not None:
-            spans[path] = span
+            spans[path] = _with_fiscal_year(chunk.get("text", ""), span)
 
     if not spans:
         return "", [], 0.0
@@ -63,6 +64,19 @@ def cite(
         bridge = max(bridges, key=lambda path: (scores.get(path, 0.0), path))
         return span, sorted([source, bridge]), 0.6
     return span, [source], 0.9
+
+
+def _with_fiscal_year(text: str, span: str) -> str:
+    """Q3 in the file is Q3 FY27. A short model answer must keep the year."""
+    if not re.fullmatch(r"Q\d+", span, re.I):
+        return span
+    at = text.find(span)
+    if at < 0:
+        return span
+    match = FY_AFTER.match(text[at + len(span) :])
+    if not match:
+        return span
+    return text[at : at + len(span) + match.end()]
 
 
 def find_span(text: str, answer: str) -> str | None:
