@@ -1,7 +1,8 @@
-# AMD AI League: Mini-Challenge 3
+# AMD AI League: Mini-Challenge 3 RAG
 
-A document question-answering project for the AMD AI League Match 3 challenge.
+A Retrieval-Augmented Generation (RAG) project for document question answering in the AMD AI League Match 3 challenge.
 It parses a mixed-format corpus, retrieves relevant passages with BM25, and returns answers with file citations.
+A Qwen vision-language model generates answers from the retrieved passages.
 A resident Qwen vision-language model serves requests through a Unix socket.
 
 ## Repository contents
