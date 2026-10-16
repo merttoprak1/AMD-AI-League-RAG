@@ -1,0 +1,19 @@
+# Limit the build context to the application and the required checkpoint.
+**
+!Dockerfile
+!.dockerignore
+!app/
+!app/**
+!models/
+!models/qwen-7b/
+!models/qwen-7b/**
+
+# Exclude local files even within included directories.
+**/__pycache__/
+**/*.py[cod]
+**/.DS_Store
+**/.env
+**/.env.*
+**/.cache/
+**/.git/
+**/*.sock

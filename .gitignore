@@ -1,5 +1,41 @@
+# Operating system and editor files
 .DS_Store
+._*
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python environments and caches
 .venv/
+venv/
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+
+# Local credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+.aws/
+*.pem
+*.key
+
+# Model weights and generated runtime files
 mc3-starter-kit/starter/models/
+mc3-starter-kit/index/
+mc3-starter-kit/output/
+mc3-starter-kit/starter/index/
+mc3-starter-kit/starter/output/
+*.sock
+
+# Unrelated local sheet-layout exports
+/levha-yerlesim*.svg
+/46 levha*.pdf
